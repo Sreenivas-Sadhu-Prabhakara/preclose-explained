@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'">
+  <title>How home loan prepayment works — the reduce-EMI vs reduce-tenure idea, animated</title>
+  <meta name="description" content="An animated explainer of how prepaying a home loan actually works: watch the amortization schedule get rewritten, months erased, and see why reduce-tenure usually beats reduce-EMI. Then try the free, offline calculator.">
+  <meta name="color-scheme" content="dark light">
+  <link rel="canonical" href="https://sreenivas-sadhu-prabhakara.github.io/preclose-explained/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Sreenivas Sadhu Prabhakara">
+  <meta name="keywords" content="how home loan prepayment works, reduce EMI vs reduce tenure explained, what does prepayment do to a loan, part payment interest saved, amortization schedule animation, loan prepayment explainer">
+  <meta name="theme-color" content="#0A0D18" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f4fb" media="(prefers-color-scheme: light)">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="preclose explained">
+  <meta property="og:title" content="How home loan prepayment works — the reduce-EMI vs reduce-tenure idea, animated">
+  <meta property="og:description" content="Watch a prepayment rewrite your loan: months erased, interest saved, and why reduce-tenure usually wins. An animated, offline explainer.">
+  <meta property="og:url" content="https://sreenivas-sadhu-prabhakara.github.io/preclose-explained/">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:image" content="https://sreenivas-sadhu-prabhakara.github.io/preclose-explained/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Twin burn-down curves diving to an early loan closure — periwinkle baseline vs amber with-prepayments">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How home loan prepayment works — animated explainer">
+  <meta name="twitter:description" content="Watch a prepayment rewrite your loan: months erased, interest saved, reduce-tenure vs reduce-EMI. Offline, no tracking.">
+  <meta name="twitter:image" content="https://sreenivas-sadhu-prabhakara.github.io/preclose-explained/og-image.png">
+  <meta name="twitter:image:alt" content="Twin burn-down curves diving to an early loan closure">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Structured data (data block; not affected by script-src) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "preclose explained",
+    "description": "An animated explainer of how home loan prepayment works — how a lump sum rewrites the amortization schedule, why reduce-tenure usually saves more interest than reduce-EMI — with a link to a free, offline prepayment calculator.",
+    "url": "https://sreenivas-sadhu-prabhakara.github.io/preclose-explained/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any (modern web browser)",
+    "browserRequirements": "Requires a modern web browser.",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+    "license": "https://opensource.org/licenses/MIT",
+    "author": { "@type": "Person", "name": "Sreenivas Sadhu Prabhakara" },
+    "softwareVersion": "0.1.0",
+    "featureList": [
+      "Animated walkthrough of how prepayment rewrites a loan schedule",
+      "Twin burn-down curve visual of interest saved and months erased",
+      "Plain-language reduce-EMI vs reduce-tenure comparison",
+      "Explains the connect-src 'none' enforced-privacy guarantee",
+      "Respects prefers-reduced-motion",
+      "Links to a free, offline calculator"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does prepaying a home loan actually do?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A prepayment (part-payment) knocks a lump sum straight off your outstanding principal. Because interest each month is charged on the balance you still owe, a smaller balance means less interest every remaining month. The saving compounds: every rupee of interest you avoid stays in the loan working against future interest too, which is why a single early prepayment can erase many months from the end of the loan."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it better to reduce EMI or reduce tenure after a prepayment?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For the same prepayment, reducing the tenure almost always saves more total interest than reducing the EMI. Reduce-tenure keeps your monthly payment the same and finishes the loan earlier; reduce-EMI keeps the end date the same and lowers each payment. Because you keep paying the larger amount against a smaller balance, reduce-tenure clears the principal faster and starves the loan of interest. Reduce-EMI wins only when you specifically need lower monthly cash flow now."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this explainer or its calculator send my loan details anywhere?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Both pages set a Content-Security-Policy with connect-src 'none', so the browser itself blocks every network request — there is no fetch, no analytics, no tracking. The calculator computes everything on your device and saves scenarios only in your own browser storage. This is an enforced guarantee, not just a promise."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#cta">Skip to the calculator link</a>
+
+  <!-- progress rail -->
+  <div class="rail" aria-hidden="true"><span class="rail__fill" id="railFill"></span></div>
+
+  <!-- ============ HERO / HOOK ============ -->
+  <header class="scene hero" id="top" data-scene>
+    <div class="scene__inner hero__inner">
+      <div class="brandline">
+        <svg class="brandmark" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M5 8 C 12 9, 18 15, 27 24" fill="none" stroke="var(--peri)" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+          <path d="M5 8 C 9 11, 12 20, 18 24" fill="none" stroke="var(--amber)" stroke-width="2.9" stroke-linecap="round"/>
+          <line x1="18" y1="20" x2="18" y2="27.5" stroke="var(--amber)" stroke-width="2.6" stroke-linecap="round"/>
+          <circle cx="18" cy="24" r="2" fill="var(--amber)"/>
+        </svg>
+        <span class="brandline__name">preclose</span>
+        <span class="brandline__tag">the idea, explained</span>
+      </div>
+
+      <p class="eyebrow">Prepayment &middot; amortization &middot; on your device</p>
+      <h1 class="hero__title">How Home Loan Prepayment Works<span class="hero__accent"> &mdash; why one lump sum erases months, and when reduce&#8209;tenure beats reduce&#8209;EMI</span></h1>
+      <p class="hero__lede">
+        You get a bonus. You could park it in the bank &mdash; or throw it at the loan.
+        What actually happens to your loan if you do? Scroll, and watch it happen:
+        the schedule rewritten, the interest that quietly evaporates, and the plain-English
+        reason banks give you <em>two</em> choices when you prepay.
+      </p>
+      <p class="hero__scrollcue" id="scrollCue">Scroll to watch &darr;</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ SCENE 1: THE PROBLEM ============ -->
+    <section class="scene" id="problem" data-scene aria-labelledby="problemH">
+      <div class="scene__inner">
+        <p class="scene__kicker">The real problem</p>
+        <h2 class="scene__h" id="problemH">Your bank shows you an EMI. It never shows you the interest.</h2>
+        <p class="scene__body">
+          Every month your payment splits in two. Early in a loan, most of it is
+          <strong class="ink-peri">interest</strong> &mdash; rent on money you still owe. Only a sliver
+          chips at the <strong class="ink-amber">principal</strong>. That ratio is the whole game,
+          and no bank statement draws it for you.
+        </p>
+
+        <div class="splitviz" aria-hidden="true">
+          <div class="splitviz__track" data-anim="split">
+            <span class="splitviz__year">Month&nbsp;12</span>
+            <div class="splitbar">
+              <span class="splitbar__int" style="--w:82%"></span>
+              <span class="splitbar__pri" style="--w:18%"></span>
+            </div>
+            <span class="splitviz__lab"><span class="dot dot--peri"></span>82% interest &middot; <span class="dot dot--amber"></span>18% principal</span>
+          </div>
+          <div class="splitviz__track" data-anim="split">
+            <span class="splitviz__year">Month&nbsp;120</span>
+            <div class="splitbar">
+              <span class="splitbar__int" style="--w:44%"></span>
+              <span class="splitbar__pri" style="--w:56%"></span>
+            </div>
+            <span class="splitviz__lab"><span class="dot dot--peri"></span>44% interest &middot; <span class="dot dot--amber"></span>56% principal</span>
+          </div>
+        </div>
+        <p class="scene__foot">Illustrative split for a typical 20-year loan &mdash; your exact numbers come from the calculator.</p>
+      </div>
+    </section>
+
+    <!-- ============ SCENE 2: HOW IT WORKS (the motif) ============ -->
+    <section class="scene scene--motif" id="how" data-scene aria-labelledby="howH">
+      <div class="scene__inner">
+        <p class="scene__kicker">How the prepayment works</p>
+        <h2 class="scene__h" id="howH">One lump sum, and the whole curve dives.</h2>
+        <p class="scene__body">
+          A prepayment lands straight on the <strong class="ink-amber">principal</strong> &mdash; the balance
+          you owe. Interest is charged on that balance, so a smaller balance means
+          less interest <em>every</em> remaining month. The saving compounds, and the loan
+          reaches zero far sooner. That gap is <strong class="ink-amber">months erased</strong>.
+        </p>
+
+        <figure class="motif">
+          <div class="motif__frame">
+            <svg id="burnChart" viewBox="0 0 800 360" role="img" aria-labelledby="burnTitle burnDesc" preserveAspectRatio="none">
+              <title id="burnTitle">Outstanding-balance burn-down</title>
+              <desc id="burnDesc">Two curves of the outstanding loan balance over time. The periwinkle baseline glides slowly to zero at the original end date. The amber with-prepayment curve drops sharply at a prepayment and reaches zero much earlier, leaving a hatched "months erased" span between the two closure points.</desc>
+
+              <!-- gridlines -->
+              <line class="grid-line" x1="60" y1="70"  x2="770" y2="70"/>
+              <line class="grid-line" x1="60" y1="150" x2="770" y2="150"/>
+              <line class="grid-line" x1="60" y1="230" x2="770" y2="230"/>
+              <!-- axes -->
+              <line class="axis" x1="60" y1="20" x2="60" y2="310"/>
+              <line class="axis" x1="60" y1="310" x2="770" y2="310"/>
+              <text class="axis-label" x="60" y="332">start</text>
+              <text class="axis-label" x="740" y="332">end</text>
+              <text class="axis-label" x="8" y="30">₹</text>
+
+              <!-- erased span (revealed) -->
+              <g id="erasedGroup" opacity="0">
+                <rect class="erased-span" x="452" y="30" width="288" height="280"/>
+                <line class="erased-hatch" x1="452" y1="310" x2="480" y2="30"/>
+                <line class="erased-hatch" x1="510" y1="310" x2="538" y2="30"/>
+                <line class="erased-hatch" x1="568" y1="310" x2="596" y2="30"/>
+                <line class="erased-hatch" x1="626" y1="310" x2="654" y2="30"/>
+                <line class="erased-hatch" x1="684" y1="310" x2="712" y2="30"/>
+                <text class="erased-label" x="596" y="60" text-anchor="middle">months erased</text>
+              </g>
+
+              <!-- baseline periwinkle: start(60,40) to zero at end(740,310) -->
+              <path id="curveBase" class="curve-base" d="M60 40 C 300 90, 560 210, 740 310"/>
+              <!-- with-prepayment amber: dives at the prepayment marker (x=300), closes early (x=452) -->
+              <path id="curvePre" class="curve-pre" d="M60 40 C 180 95, 250 140, 300 165 L 300 120 C 360 175, 410 265, 452 310"/>
+
+              <!-- prepayment marker -->
+              <g id="prepayMarker" opacity="0">
+                <line class="prepay-line" x1="300" y1="120" x2="300" y2="165"/>
+                <circle class="prepay-dot" cx="300" cy="120" r="5"/>
+                <text class="prepay-label" x="300" y="108" text-anchor="middle">prepayment</text>
+              </g>
+
+              <!-- closure ticks -->
+              <g id="closurePre" opacity="0">
+                <line class="closure-tick" x1="452" y1="298" x2="452" y2="322"/>
+                <circle class="closure-dot" cx="452" cy="310" r="6"/>
+              </g>
+              <g id="closureBase" opacity="0">
+                <line class="closure-tick-dim" x1="740" y1="298" x2="740" y2="322"/>
+                <circle class="closure-dot-dim" cx="740" cy="310" r="5"/>
+              </g>
+            </svg>
+          </div>
+          <figcaption class="motif__cap">
+            <span class="legend"><span class="swatch swatch--base"></span> Baseline &mdash; do nothing</span>
+            <span class="legend"><span class="swatch swatch--pre"></span> With one prepayment</span>
+            <span class="legend"><span class="swatch swatch--erased"></span> Months erased</span>
+          </figcaption>
+        </figure>
+        <p class="scene__foot">Curves are illustrative of the shape, not your loan. The live calculator draws them to the paisa from your inputs.</p>
+      </div>
+    </section>
+
+    <!-- ============ SCENE 3: THE TWO CHOICES ============ -->
+    <section class="scene" id="choices" data-scene aria-labelledby="choicesH">
+      <div class="scene__inner">
+        <p class="scene__kicker">The choice every bank offers</p>
+        <h2 class="scene__h" id="choicesH">Reduce the tenure, or reduce the EMI?</h2>
+        <p class="scene__body">
+          When you prepay, the bank asks one question: keep your EMI the same and
+          <strong class="ink-amber">finish earlier</strong>, or keep the end date and
+          <strong class="ink-peri">pay less each month</strong>? Same lump sum, very different totals.
+        </p>
+
+        <div class="choices" data-anim="choices">
+          <article class="choice choice--win">
+            <header class="choice__head">
+              <h3 class="choice__title">Reduce tenure</h3>
+              <span class="choice__badge">usually saves more</span>
+            </header>
+            <p class="choice__desc">Your EMI stays the same. You keep paying the larger amount against a smaller balance, so the principal clears faster and the loan ends sooner.</p>
+            <dl class="choice__stats">
+              <div><dt>Monthly payment</dt><dd>unchanged</dd></div>
+              <div><dt>Loan ends</dt><dd class="pos">much earlier</dd></div>
+              <div><dt>Total interest</dt><dd class="pos">lowest</dd></div>
+            </dl>
+          </article>
+
+          <article class="choice">
+            <header class="choice__head">
+              <h3 class="choice__title">Reduce EMI</h3>
+              <span class="choice__badge choice__badge--muted">easier on cash flow</span>
+            </header>
+            <p class="choice__desc">Your end date stays the same. Each month costs less &mdash; useful if you need breathing room now &mdash; but you keep paying interest for the full original term.</p>
+            <dl class="choice__stats">
+              <div><dt>Monthly payment</dt><dd class="pos">lower</dd></div>
+              <div><dt>Loan ends</dt><dd>same date</dd></div>
+              <div><dt>Total interest</dt><dd>saves less</dd></div>
+            </dl>
+          </article>
+        </div>
+        <p class="scene__call">
+          <span class="scene__call-mark">&#9670;</span>
+          Same prepayment, reduce-tenure almost always wins on total interest &mdash; because you never lower the amount attacking the balance.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ SCENE 4: PRIVACY GUARANTEE ============ -->
+    <section class="scene scene--privacy" id="privacy" data-scene aria-labelledby="privacyH">
+      <div class="scene__inner">
+        <p class="scene__kicker">The guarantee</p>
+        <h2 class="scene__h" id="privacyH">Your loan numbers never leave the device. The browser enforces it.</h2>
+        <p class="scene__body">
+          A prepayment calculator sees your salary, your loan, your bonus. The honest
+          answer to &ldquo;where does that go?&rdquo; is: <strong class="ink-amber">nowhere</strong>.
+          The page ships a Content-Security-Policy that sets <code>connect&#8209;src&nbsp;'none'</code> &mdash;
+          the browser itself refuses every network request the code could ever make.
+        </p>
+
+        <div class="shield" data-anim="shield" aria-hidden="true">
+          <div class="shield__device">
+            <span class="shield__label">your device</span>
+            <span class="shield__pill">principal &middot; rate &middot; bonus</span>
+          </div>
+          <div class="shield__wall">
+            <div class="shield__packet" id="packet"></div>
+            <div class="shield__barrier"><span>connect-src 'none'</span></div>
+            <div class="shield__blocked">blocked</div>
+          </div>
+          <div class="shield__cloud">the internet</div>
+        </div>
+        <p class="scene__foot">No fetch, no analytics, no fonts, no CDN. Not a promise in a privacy policy &mdash; a rule the browser can't ignore.</p>
+      </div>
+    </section>
+
+    <!-- ============ SCENE 5: FEATURE TOUR ============ -->
+    <section class="scene" id="tour" data-scene aria-labelledby="tourH">
+      <div class="scene__inner">
+        <p class="scene__kicker">What the tool actually does</p>
+        <h2 class="scene__h" id="tourH">Everything computed, nothing hidden.</h2>
+        <ul class="tour" data-anim="tour">
+          <li class="tour__item">
+            <span class="tour__icon" aria-hidden="true">&#9636;</span>
+            <div><h3 class="tour__t">Full amortization schedule</h3><p class="tour__d">Month-by-month opening balance, interest, principal, closing balance &mdash; grouped by year, reconciled to close at exactly ₹0.</p></div>
+          </li>
+          <li class="tour__item">
+            <span class="tour__icon" aria-hidden="true">&#43;</span>
+            <div><h3 class="tour__t">One-time &amp; recurring prepayments</h3><p class="tour__d">A single lump sum or an annual bonus every N months, each with an optional prepayment charge netted honestly out of the savings.</p></div>
+          </li>
+          <li class="tour__item">
+            <span class="tour__icon" aria-hidden="true">&#8646;</span>
+            <div><h3 class="tour__t">The side-by-side verdict</h3><p class="tour__d">Reduce-EMI vs reduce-tenure computed together: net interest saved, months erased, new EMI, new closure date, and a one-line call.</p></div>
+          </li>
+          <li class="tour__item">
+            <span class="tour__icon" aria-hidden="true">&#8767;</span>
+            <div><h3 class="tour__t">Twin burn-down chart</h3><p class="tour__d">The hero visual you just watched &mdash; drawn to the paisa from your loan, with the hatched months-erased span and closure tick.</p></div>
+          </li>
+          <li class="tour__item">
+            <span class="tour__icon" aria-hidden="true">&#8681;</span>
+            <div><h3 class="tour__t">CSV export &amp; print</h3><p class="tour__d">The full rewritten schedule as RFC-4180 CSV, plus a clean print-to-PDF path for your records &mdash; no PDF library, no upload.</p></div>
+          </li>
+          <li class="tour__item">
+            <span class="tour__icon" aria-hidden="true">&#9873;</span>
+            <div><h3 class="tour__t">Honest-model note, on-screen</h3><p class="tour__d">Monthly-rest vs your bank's daily-reducing method is stated right beside the results &mdash; not buried in fine print.</p></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="scene scene--cta" id="cta" data-scene aria-labelledby="ctaH">
+      <div class="scene__inner cta__inner">
+        <svg class="cta__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M5 8 C 12 9, 18 15, 27 24" fill="none" stroke="var(--peri)" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+          <path d="M5 8 C 9 11, 12 20, 18 24" fill="none" stroke="var(--amber)" stroke-width="2.9" stroke-linecap="round"/>
+          <line x1="18" y1="20" x2="18" y2="27.5" stroke="var(--amber)" stroke-width="2.6" stroke-linecap="round"/>
+          <circle cx="18" cy="24" r="2" fill="var(--amber)"/>
+        </svg>
+        <h2 class="scene__h cta__h" id="ctaH">Now run it on your own loan.</h2>
+        <p class="scene__body cta__body">
+          Type in your principal, rate and tenure, add the bonus you're thinking about,
+          and see the exact interest saved, the months erased, and which strategy wins &mdash;
+          all computed on your device, before you walk into the branch.
+        </p>
+        <a class="btn btn--primary cta__btn" href="https://sreenivas-sadhu-prabhakara.github.io/preclose/">
+          Open the preclose calculator &rarr;
+        </a>
+        <p class="cta__note">Free &middot; no account &middot; works 100% offline &middot; nothing leaves your device</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__disclaimer">
+        <strong>Not financial advice.</strong> This is an educational explainer of how loan
+        prepayment works, using a standard monthly-rest reducing-balance model. All curves and
+        splits shown here are illustrative of the concept, not your loan. Banks use daily-reducing
+        balances, so real figures differ. Verify any prepayment decision against your lender's
+        official statement and terms before acting.
+      </p>
+      <p class="foot__meta">
+        <span>Animated explainer</span><span class="foot__dot">&middot;</span>
+        <span>Works 100% offline</span><span class="foot__dot">&middot;</span>
+        <span>No network, no tracking</span><span class="foot__dot">&middot;</span>
+        <span><a href="https://sreenivas-sadhu-prabhakara.github.io/preclose/">Open the calculator</a></span><span class="foot__dot">&middot;</span>
+        <span>MIT&nbsp;License</span><span class="foot__dot">&middot;</span>
+        <span>&copy; 2026 Sreenivas&nbsp;Sadhu&nbsp;Prabhakara</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
